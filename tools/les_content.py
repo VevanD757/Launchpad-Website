@@ -355,7 +355,7 @@ caption('Gabriel Morgan', 'Chief Technology Officer, Arc’teryx')
 caption('Shantanu Mehta', 'Investment Associate, Spring')
 caption('Industry leaders', 'To be announced')
 
-# ---- FAQ (1-12 rewritten; 13-18 hidden in les.css)
+# ---- FAQ (1-12 rewritten; only 1-7 are shown, see les.css)
 FAQ = [
     ('How do I apply?', 'What is Launchpad Entrepreneurial Society?', None),
     ('When and where is it?', 'Who can take part?',

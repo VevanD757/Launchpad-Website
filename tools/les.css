@@ -6,8 +6,16 @@ a[href="/apply"], .lp-clock, .apply-dock { display: none !important; }
 div:has(> nav > a[href*="stanforcreators"]),
 div:has(> a[href="/apply"]):not(:has(> a:not([href="/apply"]))),
 div:has(> nav > a[href="/legal/terms"]) { display: none !important; }
-/* FAQ: only the first twelve questions are in use */
-details[name="faq"]:nth-of-type(n+13) { display: none !important; }
+/* FAQ: first seven questions only, on plain white with the footer straight after */
+details[name="faq"]:nth-of-type(n+8) { display: none !important; }
+div.relative:has(> section#faq) { min-height: 0 !important; }
+div.relative:has(> section#faq) > .absolute { display: none !important; }
+#faq { padding-top: 2rem !important; padding-bottom: 5rem !important; }
+#faq h2, #faq .faq-card { color: #000 !important; text-shadow: none !important; }
+#faq .faq-card { border-color: #dae0ea !important; }
+#faq .faq-card:hover, #faq .faq-card[open] { background: #ebf0fe !important; }
+#faq .faq-card p { color: rgba(0, 0, 0, 0.75) !important; }
+#faq .faq-card summary > span:first-child { color: #808eb6 !important; }
 /* Speaker cards: hide social links that have no real target */
 a[aria-label="Shantanu Mehta on X"], a[aria-label^="Industry leaders on"], a[aria-label="Gabriel Morgan on X"] { display: none !important; }
 /* Hero: with no apply clock below it, centre the headline in the space above the photo */
