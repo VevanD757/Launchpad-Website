@@ -1,0 +1,12 @@
+
+/* ---- Launchpad Entrepreneurial Society overrides ---- */
+/* No applications: hide every Apply button, the deadline clock and the floating apply dock */
+a[href="/apply"], .lp-clock, .apply-dock { display: none !important; }
+/* Footer: Stan social links, the Apply column and the Stan legal column */
+div:has(> nav > a[href*="stanforcreators"]),
+div:has(> a[href="/apply"]):not(:has(> a:not([href="/apply"]))),
+div:has(> nav > a[href="/legal/terms"]) { display: none !important; }
+/* FAQ: only the first twelve questions are in use */
+details[name="faq"]:nth-of-type(n+13) { display: none !important; }
+/* Speaker cards: hide social links that have no real target */
+a[aria-label^="More speakers on"], a[aria-label^="Industry leaders on"], a[aria-label="Gabriel Morgan on X"] { display: none !important; }
