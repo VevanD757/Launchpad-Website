@@ -322,7 +322,7 @@ raw('index', '<span class="text-[1.35rem] font-semibold leading-none tracking-[-
 # ---- speakers
 rep('Featured speakers/investors', 'Featured speakers')
 for f_old, f_new in [('/img/sophia-amoruso.jpg', '/img/gabriel-morgan.jpg'),
-                     ('/img/zach-yadegari.jpg', '/img/speaker-tba-1.jpg'),
+                     ('/img/zach-yadegari.jpg', '/img/shantanu-mehta.jpg'),
                      ('/img/gary-vee.jpg', '/img/speaker-tba-2.jpg')]:
     for pg in PAGES.values():
         pg.sub_markup(lambda s, a=f_old, b=f_new: s.replace(a, b))
@@ -333,9 +333,10 @@ rep('Sophia Amoruso', 'Gabriel Morgan')
 rep('Sophia Amoruso on LinkedIn', 'Gabriel Morgan on LinkedIn')
 rep('Sophia Amoruso on X', 'Gabriel Morgan on X')
 rep('https://www.linkedin.com/in/sophiaamoruso/', 'https://www.linkedin.com/in/gabrielmorgan/')
-rep('Zach Yadegari', 'More speakers')
-rep('Zach Yadegari on LinkedIn', 'More speakers on LinkedIn')
-rep('Zach Yadegari on X', 'More speakers on X')
+rep('Zach Yadegari', 'Shantanu Mehta')
+rep('Zach Yadegari on LinkedIn', 'Shantanu Mehta on LinkedIn')
+rep('Zach Yadegari on X', 'Shantanu Mehta on X')
+rep('https://www.linkedin.com/in/zachyadegari', 'https://www.linkedin.com/in/shantanusmehta/')
 rep('Gary Vee', 'Industry leaders')
 rep('Gary Vee on LinkedIn', 'Industry leaders on LinkedIn')
 rep('Gary Vee on X', 'Industry leaders on X')
@@ -351,7 +352,7 @@ def caption(name, text):
 
 
 caption('Gabriel Morgan', 'Chief Technology Officer, Arc’teryx')
-caption('More speakers', 'To be announced')
+caption('Shantanu Mehta', 'Investment Associate, Spring')
 caption('Industry leaders', 'To be announced')
 
 # ---- FAQ (1-12 rewritten; 13-18 hidden in les.css)
