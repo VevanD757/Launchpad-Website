@@ -20,3 +20,9 @@ div.relative:has(> section#faq) > .absolute { display: none !important; }
 a[aria-label="Shantanu Mehta on X"], a[aria-label^="Industry leaders on"], a[aria-label="Gabriel Morgan on X"] { display: none !important; }
 /* Hero: with no apply clock below it, centre the headline in the space above the photo */
 #top > .absolute { top: 50%; bottom: auto !important; transform: translateY(-50%); }
+/* Hero: just the name, large and centred */
+#top h1 { max-width: none !important; font-size: clamp(4rem, 13vw, 11rem) !important; line-height: 0.9 !important; }
+/* Who page: no closing "join us" block; hovered wall tiles only brighten, they do not lift */
+section:has(p[data-progress-span]) { display: none !important; }
+[aria-label="Drifting wall of tiles"] { --dw-lift: 0px !important; }
+[aria-label="Drifting wall of tiles"] [data-tile-id] > span { box-shadow: none !important; }

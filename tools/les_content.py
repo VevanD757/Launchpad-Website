@@ -235,6 +235,19 @@ for d in ['A select group of founders at a camp just outside of New York. Stanle
           'A select group of founders. 16 days just outside of New York. Pitch day in front of investors. Filmed as a show.']:
     rep(d, DESC, min_hits=0)
 
+rep('Launchpad, by Stan', 'Launchpad Entrepreneurial Society')
+for page, old, new in [
+    ('who', 'The founders Launchpad is built for, and the ones it is not. Only the founders with the most potential make the cut.',
+     'Who Launchpad is for: every high school student who wants to build, compete and lead. No experience needed, and always free.'),
+    ('where', 'Cabins just outside of New York, a select group of founders, three meals a day in one hall. Two and a half hours north of Manhattan. Where the sixteen days happen.',
+     'Launchpad Entrepreneurial Society is based in Vancouver, British Columbia, running events and school clubs across the Lower Mainland.'),
+    ('agenda', 'Four acts across sixteen days and fifteen nights just outside of New York. Broad strokes only; format and schedule subject to change.',
+     'Our initiatives: the Summit case competition, the Tyche Cup, school clubs and volunteering, all free for high school students.'),
+    ('stan', 'Launchpad is run by Stan. We build in public, ship in days rather than months, and have taken our own products from zero.',
+     'We are Launchpad Entrepreneurial Society, a youth-run nonprofit in Vancouver building free competitions and programs for high school students.'),
+]:
+    rep(old, new, [page])
+
 # ---- home
 heading('index', 'mx-auto max-w-[15ch] text-[2.75rem] leading-[0.8]', [
     ('Launch', 'Top'), ('in', 'competitions.'), ('two', 'Zero'), ('weeks.', 'cost.'),
@@ -244,8 +257,13 @@ raw('index', 'students.<sup class="relative -top-[0.6em] text-[0.45em] tracking-
 edit_payload_elem('index', 'mx-auto max-w-[15ch] text-[2.75rem] leading-[0.8]',
                   lambda el: [c.__setitem__(3, {'children': 'students.'}) for c in el[3]['children']
                               if isinstance(c, list) and isinstance(c[3].get('children'), list) and c[3]['children'][0] == 'students.'])
-rep('*Outcomes depend on each team. Stan does not guarantee revenue, investment, or prizes.',
-    'A youth-run nonprofit based in Vancouver, British Columbia.')
+rep('*Outcomes depend on each team. Stan does not guarantee revenue, investment, or prizes.', '')
+# an empty string would hydrate as a text node the HTML does not have; render nothing instead
+edit_payload_elem('index', 'sm:whitespace-nowrap md:mt-6 md:text-xs', lambda el: el[3].__setitem__('children', None))
+# the hero is just the name: collapse the word-split headline to one word
+HERO = 'mx-auto max-w-[15ch] text-[2.75rem] leading-[0.8]'
+markup_region('index', HERO, '</h1>', lambda b: b[:b.index('>') + 1] + '<span class="font-medium">Launchpad</span></h1>')
+edit_payload_elem('index', HERO, lambda el: el[3].__setitem__('children', [['$', 'span', None, {'className': 'font-medium', 'children': 'Launchpad'}]]))
 
 typefill('index', 297, [
     words('Launchpad Entrepreneurial Society is a youth-run nonprofit redefining what high school competitions can be: '
@@ -274,10 +292,10 @@ rep('How the camp actually runs:', 'Our initiatives:')
 PILLS = [
     ('One camp, a select group of founders', 'Summit Case Competition',
      'Everyone lives on site just outside of New York from arrival to departure. Cameras go up, and there is nowhere else to be.',
-     'Our flagship case competition. Teams take on a real business problem, build a strategy, and present it to a panel of industry judges.'),
+     'Canada’s largest free high school case competition. One day, three rounds and real cases, judged by professionals from Big 4 firms, banks and venture capital.'),
     ('What you’ve done before doesn’t decide this', 'The Tyche Cup',
      'No perfect deck or warm intro required. You’ll be judged on what you can build, grow, and sell in two weeks.',
-     'Our second flagship competition. Students go head to head on fast-paced challenges that reward creativity, strategy and nerve.'),
+     'One of our signature competitions. Students go head to head on fast-paced challenges that reward creativity, strategy and nerve.'),
     ('Talk, ship, charge', 'Hackathons',
      'The whole method. Ten conversations before lunch, something live by dark, and a price on it long before you feel ready.',
      'Build something real in a single weekend. Teams turn ideas into working products with help from mentors, then demo them to judges.'),
@@ -302,8 +320,8 @@ STATS_HOME = [  # (old n, new n, old unit, new unit, old label, new label, old n
      'Zero to two hundred thousand in 14 days, by the team running this camp.', 'Every competition, hackathon and workshop is free to enter.'),
     ('$1.3M', '100%', 'Stanley Short Form', 'Youth-run',
      'Four months on the same playbook. One wedge, no outside curriculum.', 'From the leadership team to the volunteers, Launchpad is run by high school students.'),
-    ('1388', '2', 'Stanley for X in 14 days', 'Summit and the Tyche Cup',
-     'Ten days. Cold outreach first, product second, price last.', 'Two flagship competitions, with hackathons, clubs and volunteering alongside.'),
+    ('1388', '∞', 'Stanley for X in 14 days', 'What we are creating',
+     'Ten days. Cold outreach first, product second, price last.', 'Summit, the Tyche Cup, hackathons, clubs and more, with new initiatives every year.'),
 ]
 for n_old, n_new, l_old, l_new, note_old, note_new in STATS_HOME:
     raw('index', f'aria-label="{n_old}"><span aria-hidden="true">{n_old}</span>', f'aria-label="{n_new}"><span aria-hidden="true">{n_new}</span>', 'markup', 1)
@@ -313,11 +331,11 @@ for n_old, n_new, l_old, l_new, note_old, note_new in STATS_HOME:
 # units under the numbers
 raw('index', '"unit":"ARR","label":"Cost to students"', '"unit":"","label":"Cost to students"', 'payload', 1)
 raw('index', '"unit":"ARR","label":"Youth-run"', '"unit":"","label":"Youth-run"', 'payload', 1)
-raw('index', '"unit":"customers","label":"Summit and the Tyche Cup"', '"unit":"flagship competitions","label":"Summit and the Tyche Cup"', 'payload', 1)
+raw('index', '"unit":"customers","label":"What we are creating"', '"unit":"possibilities","label":"What we are creating"', 'payload', 1)
 raw('index', '<span class="text-[1.35rem] font-semibold leading-none tracking-[-0.03em] text-black md:text-[1.85rem]">ARR</span>',
     '<span class="text-[1.35rem] font-semibold leading-none tracking-[-0.03em] text-black md:text-[1.85rem]"></span>', 'markup', 2)
 raw('index', '<span class="text-[1.35rem] font-semibold leading-none tracking-[-0.03em] text-black md:text-[1.85rem]">customers</span>',
-    '<span class="text-[1.35rem] font-semibold leading-none tracking-[-0.03em] text-black md:text-[1.85rem]">flagship competitions</span>', 'markup', 1)
+    '<span class="text-[1.35rem] font-semibold leading-none tracking-[-0.03em] text-black md:text-[1.85rem]">possibilities</span>', 'markup', 1)
 
 # ---- speakers
 rep('Featured speakers/investors', 'Featured speakers')
@@ -366,10 +384,10 @@ FAQ = [
       'Nothing. Every Launchpad competition, hackathon, workshop and club is free for students.')),
     ('Do I need a product already?', 'What is Summit?',
      ('No. Come with an idea or something already in motion. Wherever you’re starting, be ready to build, test, grow, and move fast.',
-      'Summit is our flagship case competition. Teams analyze a real business problem, build a recommendation and present it to a panel of judges from industry.')),
+      'Summit is Canada’s largest free high school case competition: one day, three rounds, teams of five, and judges from Big 4 firms, investment banks and venture capital. Learn more at summitcompetition.com.')),
     ('How long is it?', 'What is the Tyche Cup?',
      ('16 days and 15 nights, Sunday, October 4 to Monday, October 19. Demo Day is Sunday, October 18.',
-      'The Tyche Cup is our second flagship competition, named after the Greek goddess of fortune. It is a fast-paced challenge that rewards creativity, strategy and quick thinking.')),
+      'The Tyche Cup is one of our signature competitions, named after the Greek goddess of fortune. It is a fast-paced challenge that rewards creativity, strategy and quick thinking.')),
     ('Am I on camera the whole time?', 'Do I need business experience?',
      ('Yes. From check-in to checkout, and so is everyone else. Pitch day is filmed in front of investors.',
       'No. Many of our competitors are doing their first case or hackathon. We run workshops beforehand so everyone starts ready.')),
@@ -483,10 +501,10 @@ edit_payload_elem('agenda', 'Sixteen days and fifteen nights', lambda el: el[3].
 ACTS = [
     ('Explore', 'Summit',
      'Everyone arrives, settles in, and starts pushing outward inside the same week. The first days are about volume rather than polish: conversations with real people, ideas tested in public, offers written and thrown away by dark. By the end of it every team has something live and a much shorter list of things they still believe. Nothing is precious yet, and that is the entire point of putting it first.',
-     'Summit is our flagship case competition. Teams receive a real business problem, dig into the numbers, build a strategy, and present their recommendation to a panel of judges from industry. It is fast, demanding and designed to feel like the real thing, because the problems and the judges are real.'),
+     'Summit is Canada’s largest free high school case competition, and British Columbia’s most rigorous. Teams of five take on a real business case across three rounds in a single day, adapt to a mid-competition disruption, and present to judges from Big 4 firms, investment banks and venture capital. Learn more at summitcompetition.com.'),
     ('Create', 'Tyche Cup',
      'Whatever got a reaction becomes the only thing anyone touches. Teams cut the rest and spend the longest uninterrupted build blocks of the fortnight turning a signal into something a stranger would pay for. The story gets rewritten to match, because most of what sounded good in week one does not survive contact with an actual customer.',
-     'The Tyche Cup is our second flagship competition, named after the Greek goddess of fortune. Students go head to head on fast-paced challenges where creativity, strategy and quick thinking decide who comes out on top. Fortune favours the bold, and so does the scoreboard.'),
+     'The Tyche Cup is one of our signature competitions, named after the Greek goddess of fortune. Students go head to head on fast-paced challenges where creativity, strategy and quick thinking decide who comes out on top. Fortune favours the bold, and so does the scoreboard.'),
     ('Sell', 'Clubs',
      'A number goes on it, well before anybody feels ready to ask for one. Outbound starts in earnest and first revenue tends to land somewhere in this stretch, rarely from the customer the team had in mind. Whatever the market breaks gets repaired in the open that same week, on camera, with everyone else watching.',
      'Launchpad clubs bring entrepreneurship into high schools across Vancouver. Chapters run workshops, practice cases, hackathon prep and guest speaker sessions, so students build skills all year and not just on competition day.'),
@@ -509,16 +527,17 @@ rep('These are Stan’s own results, from building and selling our own products.
     'A few things that define us.')
 STATS = [  # (old count, new count, old prefix, new prefix, old suffix, new suffix, old label, new label)
     (200, 100, '$$', '', 'K', '%', 'ARR from Stanley LinkedIn, built and sold from nothing', 'youth-run, from the leadership team to every volunteer'),
-    (1388, 2, '', '', '', '', 'customers on Stanley for X, cold outreach first', 'flagship competitions: Summit and the Tyche Cup'),
+    (1388, None, '', '∞', '', '', 'customers on Stanley for X, cold outreach first', 'possibilities, with new initiatives every year'),
     (14, 4, '', '', ' days', '', 'from idea to first paying customer, more than once', 'ways to get involved: compete, hack, start a club or volunteer'),
     (100, 0, '', '', 'M', ' fees', 'impressions the season is built to reach', 'for students, at every event we run'),
 ]
 for c_old, c_new, pre_o, pre_n, suf_o, suf_n, l_old, l_new in STATS:
     old_p = json.dumps([pre_o, ['$', 'span', None, {'data-count': c_old, 'children': '0'}], suf_o], ensure_ascii=False, separators=(',', ':'))
-    new_p = json.dumps([pre_n, ['$', 'span', None, {'data-count': c_new, 'children': '0'}], suf_n], ensure_ascii=False, separators=(',', ':'))
+    # c_new None: a fixed symbol instead of a counting number
+    new_p = json.dumps(pre_n if c_new is None else [pre_n, ['$', 'span', None, {'data-count': c_new, 'children': '0'}], suf_n], ensure_ascii=False, separators=(',', ':'))
     raw('stan', old_p, new_p, 'payload', 1)
     mo = f'>{pre_o.replace("$$", "$")}<span data-count="{c_old}">0</span>{suf_o}</p>'
-    mn = f'>{pre_n}<span data-count="{c_new}">0</span>{suf_n}</p>'
+    mn = f'>{pre_n}</p>' if c_new is None else f'>{pre_n}<span data-count="{c_new}">0</span>{suf_n}</p>'
     raw('stan', mo, mn, 'markup', 1)
     rep(l_old, l_new, ['stan'])
 rep('We did not set out to run an accelerator.', 'We did not set out to build an organization.')
@@ -532,6 +551,11 @@ rep('Come and do it with us.', 'Come build it with us.')
 rep('A select group of founders, one camp, sixteen days. If you have read this far you probably already know whether it is for you.',
     'Compete, volunteer, or start a club at your school. If you have read this far, you probably already know you belong here.')
 rep('Who we are looking for', 'Who it’s for')
+
+# ---- drifting tile wall (who page): the hovered column used to stop; keep it moving
+_wall = [f for f, js in JS.items() if 'let i=D.current&&x||I.current===e?0:1' in js]
+assert len(_wall) == 1, _wall
+JS[_wall[0]] = JS[_wall[0]].replace('let i=D.current&&x||I.current===e?0:1', 'let i=D.current&&x?0:1')
 
 # ---- footer column heading (after the agenda edits, which rename an act called Explore)
 for name in PAGES:
