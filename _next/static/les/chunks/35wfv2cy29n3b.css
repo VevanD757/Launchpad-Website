@@ -21,10 +21,17 @@ div.relative:has(> section#faq) > .absolute { display: none !important; }
 /* Speaker cards: hide social links that have no real target */
 a[aria-label="Shantanu Mehta on X"], a[aria-label^="Industry leaders on"], a[aria-label="Gabriel Morgan on X"] { display: none !important; }
 /* Hero: with no apply clock below it, centre the headline in the space above the photo */
-#top > .absolute { top: 50%; bottom: auto !important; transform: translateY(-50%); }
+#top > .absolute { top: 64%; bottom: auto !important; transform: translateY(-50%); }
+#top > .absolute > div > :not(h1) { display: none !important; }
 /* Hero: just the name, centred (20% of the earlier large size) */
 #top h1 { max-width: none !important; font-size: clamp(0.8rem, 2.6vw, 2.2rem) !important; line-height: 1 !important; text-align: center !important; }
 /* Who page: no closing "join us" block; hovered wall tiles only brighten, they do not lift */
 section:has(p[data-progress-span]) { display: none !important; }
 [aria-label="Drifting wall of tiles"] { --dw-lift: 0px !important; }
 [aria-label="Drifting wall of tiles"] [data-tile-id] > span { box-shadow: none !important; }
+/* Header: with no Apply button on the right, centre the page links in the bar */
+header > div { position: relative; }
+header > div > nav { position: absolute; left: 50%; transform: translateX(-50%); }
+/* Hero title sits exactly in the horizontal centre */
+#top > .absolute > div { width: 100%; text-align: center; }
+#top h1 { margin-left: auto !important; margin-right: auto !important; }
