@@ -1,45 +1,35 @@
 # Launchpad Website
 
-Static rebuild of the Launchpad Entrepreneurial Society landing page (hero section), matched pixel-for-pixel against the reference design at a 1870×976 viewport.
+Static mirror of https://launchpad.stan.store — every page, style, font, image, video and animation, served as plain files (no build step).
+
+## Pages
+
+| URL | File |
+| --- | --- |
+| `/` | `index.html` |
+| `/who` | `who.html` |
+| `/where` | `where.html` |
+| `/agenda` | `agenda.html` |
+| `/apply` | `apply.html` |
+| `/stan` | `stan.html` |
+| `/legal/terms`, `/legal/privacy`, `/legal/cookies` | `legal/*.html` |
+
+`vercel.json` turns on `cleanUrls`, so `/who` serves `who.html`.
+
+## Assets
+
+- `_next/static/` — the site's compiled CSS, JavaScript and fonts
+- `img/`, `img-dither/`, `trail/`, `trail-dither/`, `video/`, `brand/` — images, the dithered image sets, the hover-trail frames and the hero video
+
+## Changes from the original
+
+- Images load directly from `img/…` instead of through Next.js's `/_next/image` optimizer (which doesn't exist on static hosting).
+- Stan's Meta (Facebook) tracking pixels are removed.
+- The apply form still posts to `/api/apply`, which doesn't exist here, so submissions fail until a real endpoint is connected.
+- Moving between pages does a normal full page load instead of Next.js's in-app navigation. Pages look the same, just without the instant client-side transition.
 
 ## Run locally
 
-No build step. Serve the folder with any static server:
-
 ```sh
 npx serve .
-# or
-python3 -m http.server 8080
 ```
-
-Then open http://localhost:8080 (or 3000 for `serve`).
-
-## Structure
-
-```
-index.html            Page markup (nav + hero)
-styles.css            All styles, design tokens and responsive rules
-assets/fonts/         Self-hosted variable fonts (SIL Open Font License)
-  inter-*.woff2               Inter v4 (opsz + wght axes) — title & subtitle
-  plus-jakarta-sans-*.woff2   Plus Jakarta Sans — nav, Apply button, "Stan"
-assets/img/
-  stan-mark.svg               Stan "$" mark
-  launchpad-wordmark.svg      LAUNCHPAD wordmark
-  logo-arcteryx.svg           Partner logos
-  logo-fidelity.svg
-  logo-spring.svg
-  hero-lodge.png              Dithered purple lodge image (8-colour palette)
-```
-
-## Design tokens
-
-| Token | Value |
-| --- | --- |
-| Brand purple | `#6355FF` |
-| Text | `#000` on `#fff` |
-| Title | Inter 400, 49px, −0.005em |
-| Subtitle | Inter 420, 20px, −0.01em |
-| Nav links / Apply | Plus Jakarta Sans 500, 18px |
-| Page gutter | `clamp(20px, 9.2vw, 172px)` |
-
-The hero image uses `image-rendering: pixelated` so the dither pattern stays crisp at every size.
