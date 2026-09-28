@@ -13,8 +13,8 @@
       "permanent": false
     },
     {
-      "source": "/legal/:path*",
-      "destination": "/",
+      "source": "/legal/:path+",
+      "destination": "/legal",
       "permanent": false
     }
   ]

@@ -18,7 +18,13 @@ import sys
 sys.path.insert(0, 'tools')
 from rsc import Page  # noqa: E402
 
-PAGES = {name: Page(name + '.html') for name in ['index', 'who', 'where', 'agenda', 'stan']}
+# the legal page is built from the mirror's legal/terms template and served at /legal
+import os
+import shutil
+if os.path.exists('legal/terms.html'):
+    shutil.move('legal/terms.html', 'legal.html')
+    shutil.rmtree('legal', ignore_errors=True)
+PAGES = {name: Page(name + '.html') for name in ['index', 'who', 'where', 'agenda', 'stan', 'legal']}
 JS = {f: open(f, encoding='utf-8').read() for f in glob.glob('_next/static/mirror/chunks/*.js')}
 LOG = []
 
@@ -556,6 +562,72 @@ rep('Who we are looking for', 'Who it’s for')
 _wall = [f for f, js in JS.items() if 'let i=D.current&&x||I.current===e?0:1' in js]
 assert len(_wall) == 1, _wall
 JS[_wall[0]] = JS[_wall[0]].replace('let i=D.current&&x||I.current===e?0:1', 'let i=D.current&&x?0:1')
+
+# ---- navigation: Summit takes the place of the old initiatives page
+rep('Initiatives', 'Summit')
+rep('/agenda', 'https://summitcompetition.com')
+
+# ---- footer: our socials, Summit and the legal page
+SOCIAL_HEAD = '"className":"text-[13px] font-semibold text-[#142658]/50","children":"Stan"'
+for name in PAGES:
+    raw(name, 'text-[#142658]/50">Stan</p>', 'text-[#142658]/50">Follow us</p>', 'markup', 1)
+    raw(name, SOCIAL_HEAD, SOCIAL_HEAD.replace('"Stan"', '"Follow us"'), 'payload', 1)
+rep('https://www.instagram.com/stanforcreators', 'https://www.instagram.com/launchpadsociety/')
+rep('https://www.linkedin.com/company/stanwithme', 'https://www.linkedin.com/company/launchpad-entrepeunrial-society/')
+rep('/legal/terms', '/legal')
+rep('Program details', 'Legal')
+rep('https://assets.stanwith.me/legal/terms-of-service.pdf', 'https://summitcompetition.com')
+rep('Stan Terms of Service', 'Summit')
+
+# ---- legal page (content from summitcompetition.com/legal)
+sys.path.insert(0, 'tools')
+from legal_content import SECTIONS  # noqa: E402
+rep('Program Details | Launchpad', 'Legal | Launchpad', ['legal'])
+
+
+def slug(t):
+    return re.sub(r'[^a-z0-9]+', '-', t.lower().replace('’', '')).strip('-')
+
+
+def node(tag, props, children):
+    """Build the same element as a React payload node and as SSR markup."""
+    attrs = ''.join(f' {"class" if k == "className" else k}="{html.escape(v, quote=True)}"' for k, v in props.items())
+    kids = children if isinstance(children, list) else [children]
+    inner = ''.join(k[1] if isinstance(k, tuple) else html.escape(k) for k in kids)
+    pl = [k[0] if isinstance(k, tuple) else k for k in kids]
+    return (['$', tag, None, dict(props, children=pl if isinstance(children, list) else pl[0])],
+            f'<{tag}{attrs}>{inner}</{tag}>')
+
+
+H2 = 'text-[1.15rem] font-bold leading-tight tracking-[-0.03em] md:text-[1.4rem]'
+H3 = 'text-base font-semibold leading-snug tracking-[-0.02em] pt-2'
+P = 'text-base leading-relaxed text-black'
+toc = node('ol', {'className': 'mt-4 space-y-1.5 list-decimal pl-5 text-base text-black'},
+           [node('li', {}, [node('a', {'href': '#' + slug(sec['title']), 'className': 'underline-offset-2 hover:underline hover:text-[#284be4]'}, sec['title'])]) for sec in SECTIONS])
+sections = []
+for sec in SECTIONS:
+    blocks = [node('h3' if kind == 'h3' else 'p', {'className': H3 if kind == 'h3' else P}, text) for kind, text in sec['blocks']]
+    sections.append(node('section', {'id': slug(sec['title']), 'className': 'scroll-mt-24'},
+                         [node('h2', {'className': H2}, sec['title']), node('div', {'className': 'mt-3 space-y-3'}, blocks)]))
+LEGAL_CLASS = 'mx-auto max-w-7xl px-6 md:px-10 pt-14 pb-20 md:pt-20 md:pb-28'
+legal = node('section', {'className': LEGAL_CLASS}, [
+    node('h1', {'className': 'font-display max-w-[18ch] text-[2.25rem] leading-[0.9] tracking-[-0.05em] md:text-[3.25rem]'}, 'Legal'),
+    node('p', {'className': 'font-label mt-4 text-[11px] uppercase tracking-wider text-[#808eb6]'}, 'LaunchPad Entrepreneurial Society'),
+    node('div', {'className': 'mt-8 max-w-[68ch]'}, [node('h2', {'className': H2}, 'Contents'), toc]),
+    node('div', {'className': 'mt-14 max-w-[68ch] space-y-12'}, sections),
+])
+FOOTER_START = '<section class="relative overflow-hidden text-[#142658]"'
+_pg = PAGES['legal']
+for _i in _pg.markup_idx:
+    _s = _pg.parts[_i]
+    _a = _s.find('<section class="' + LEGAL_CLASS + '">')
+    if _a >= 0:
+        _b = _s.index(FOOTER_START, _a)
+        _pg.parts[_i] = _s[:_a] + legal[1] + _s[_b:]
+        break
+else:
+    raise SystemExit('legal: content section not found')
+edit_payload_elem('legal', '"className":"' + LEGAL_CLASS + '"', lambda el: el.__setitem__(slice(None), legal[0]))
 
 # ---- footer column heading (after the agenda edits, which rename an act called Explore)
 for name in PAGES:
