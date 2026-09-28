@@ -11,10 +11,9 @@ The design, animations and pixel-dither image effect (recoloured to Launchpad bl
 | `/` | `index.html` | Home: mission, initiatives, stats, featured speakers, FAQ |
 | `/who` | `who.html` | Who it’s for |
 | `/where` | `where.html` | Where we are (Vancouver) |
-| `/agenda` | `agenda.html` | Initiatives: Summit, Tyche Cup, Clubs, Volunteer |
 | `/stan` | `stan.html` | Who we are |
 
-`vercel.json` turns on `cleanUrls` (so `/who` serves `who.html`) and redirects the old `/apply` and `/legal/*` URLs to the home page.
+`vercel.json` turns on `cleanUrls` (so `/who` serves `who.html`) and redirects `/agenda`, `/apply` and `/legal/*` to the home page. (`agenda.html` is still rewritten by the content script, then removed by the theme script.)
 
 ## Editing the text
 

@@ -115,4 +115,7 @@ mark(290).save(buf, 'PNG')
 open('icon.svg', 'w').write('<svg width="290" height="290" viewBox="0 0 290 290" xmlns="http://www.w3.org/2000/svg">'
                             '<image width="290" height="290" href="data:image/png;base64,'
                             + base64.b64encode(buf.getvalue()).decode() + '"/></svg>\n')
+# the initiatives page is not part of the site (vercel.json redirects /agenda home)
+if os.path.exists('agenda.html'):
+    os.remove('agenda.html')
 print('theme applied')

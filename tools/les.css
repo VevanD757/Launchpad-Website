@@ -2,6 +2,8 @@
 /* ---- Launchpad Entrepreneurial Society overrides ---- */
 /* No applications: hide every Apply button, the deadline clock and the floating apply dock */
 a[href="/apply"], .lp-clock, .apply-dock { display: none !important; }
+/* No initiatives page: hide every link to /agenda (header, mobile menu, footer) */
+a[href="/agenda"] { display: none !important; }
 /* Footer: Stan social links, the Apply column and the Stan legal column */
 div:has(> nav > a[href*="stanforcreators"]),
 div:has(> a[href="/apply"]):not(:has(> a:not([href="/apply"]))),
