@@ -29,9 +29,11 @@ a[aria-label="Shantanu Mehta on X"], a[aria-label^="Industry leaders on"], a[ari
 section:has(p[data-progress-span]) { display: none !important; }
 [aria-label="Drifting wall of tiles"] { --dw-lift: 0px !important; }
 [aria-label="Drifting wall of tiles"] [data-tile-id] > span { box-shadow: none !important; }
-/* Header: with no Apply button on the right, centre the page links in the bar */
-header > div { position: relative; }
-header > div > nav { position: absolute; left: 50%; transform: translateX(-50%); }
+/* Header: page links sit on the right of the bar */
+header > div > nav { margin-left: auto; }
+@media (min-width: 768px) { header > div > nav + div { display: none !important; } }  /* empty Apply slot */
+/* Summit is linked from the footer only, not the header, phone menu or footer page list */
+a[href="https://summitcompetition.com"]:not([target="_blank"]) { display: none !important; }
 /* Hero title sits exactly in the horizontal centre */
 #top > .absolute > div { width: 100%; text-align: center; }
 #top h1 { margin-left: auto !important; margin-right: auto !important; }
